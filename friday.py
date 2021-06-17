@@ -25,7 +25,7 @@ language = 'vi'
 path = ChromeDriverManager().install()
 
 def speak(text):
-    print("Bot: {}".format(text))
+    print("F.R.I.D.A.Y : {}".format(text))
     tts = gTTS(text=text, lang=language, slow=False)
     tts.save("sound.mp3")
     playsound.playsound("sound.mp3", False)
@@ -34,6 +34,7 @@ def speak(text):
 def get_audio():
     r = sr.Recognizer()
     with sr.Microphone() as source:
+        r.pause_threshold = 3
         print("Tôi: ", end='')
         audio = r.listen(source, phrase_time_limit=5)
         try:
@@ -48,14 +49,17 @@ def stop():
     speak("Hẹn gặp lại bạn sau!")
 
 def get_text():
+    time.sleep(3)
     for i in range(3):
         text = get_audio()
         if text:
             return text.lower()
-        elif i < 2:
-            speak("Bot không nghe rõ. Bạn nói lại được không!")
+        else:
+            continue
+        # elif i < 2:
+        #     speak("Bot không nghe rõ. Bạn nói lại được không!")
     time.sleep(2)
-    stop()
+    # stop()
     return 0
 
 def hello(name):
@@ -215,6 +219,7 @@ def tell_me_about():
         speak(contents[0])
         time.sleep(10)
         for content in contents[1:]:
+            time.sleep
             speak("Bạn muốn nghe thêm không")
             ans = get_text()
             if "có" not in ans:
@@ -243,8 +248,10 @@ def assistant():
     speak("Xin chào, bạn tên là gì nhỉ?")
     name = get_text()
     if name:
+        # print(name)
         speak("Chào bạn {}".format(name))
-        speak("Bạn cần Bot Alex có thể giúp gì ạ?")
+        time.sleep(1)
+        speak("Bạn cần Friday giúp gì ạ?")
         while True:
             text = get_text()
             if not text:
@@ -278,7 +285,8 @@ def assistant():
             elif "định nghĩa" in text:
                 tell_me_about()
             else:
-                speak("Bạn cần Bot giúp gì ạ?")
+                pass
+                # speak("Bạn cần Bot giúp gì ạ?")
 
 assistant()
 
